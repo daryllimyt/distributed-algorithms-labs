@@ -11,17 +11,16 @@ defmodule Flooding do
   defp start(:cluster_start, config) do
   
     # Create 10 peer processes (each running on its own node) 
-    # that passes its neighbors (including itself) to all the 
-    # other peers
+    # that passes its neighbors (including itself) to all other peers
 
     IO.puts "Creatiing peers..."
     n_peers = config.n_peers
     
-    peer_map = Enum.map(1..n_peers, fn _ -> 
+    peer_list = Enum.map(1..n_peers, fn _ -> 
       spawn(Peer, :start, []) 
     end)
     IO.puts "#{n_peers} peers spawned..."
-    send Enum.at(peer_map, 0), {:hello, peer_map} # send hello message to the first peer
+    send Enum.at(peer_list, 0), {:hello, peer_list} # send hello message to the first peer
     Process.sleep(10000)
     IO.puts "Connection ended."
 

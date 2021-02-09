@@ -10,11 +10,11 @@ defmodule Peer do
   defp next do
     # Peer should forward the first :hello message it receives to all neighbors
     receive do
-      {:hello, peer_map} -> 
+      {:hello, neighbors} -> 
         IO.puts "Peer #{inspect(self())} received first message..."
         IO.puts "Peer #{inspect(self())} flooding..."
-        Enum.map(peer_map, fn peer_idx -> 
-          send peer_idx, {:hello, peer_map}
+        Enum.map(neighbors, fn n -> 
+          send n, {:hello, neighbors}
         end)
         count(1) # initialize count
     end
